@@ -7,15 +7,15 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 
 const index = require('./routes/index')
-const users = require('./routes/users')
+const user = require('./routes/user')
+const resources = require('./routes/resources')
+const rank = require('./routes/rank')
 
 // error handler
 onerror(app)
 
 // middlewares
-app.use(bodyparser({
-  enableTypes: ['json', 'form', 'text']
-}))
+app.use(bodyparser())
 app.use(json())
 app.use(logger())
 app.use(require('koa-static')(__dirname + '/public'))
@@ -32,11 +32,14 @@ app.use(async (ctx, next) => {
 
 // routes
 app.use(index.routes(), index.allowedMethods())
-app.use(users.routes(), users.allowedMethods())
+app.use(user.routes(), user.allowedMethods())
+app.use(resources.routes(), resources.allowedMethods())
+app.use(rank.routes(), rank.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
 });
 
+app.listen(3000)
 module.exports = app
