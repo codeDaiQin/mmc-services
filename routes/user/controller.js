@@ -2,14 +2,29 @@ const mysql = require('../../utils/mysql')
 const table = 'user'
 
 exports.get = async ctx => {
-  const data = await mysql(`SELECT * FROM ${table} WHERE id=?`, 1)
+  // const data = await mysql(`SELECT * FROM ${table} WHERE id=?`, '1')
 
   ctx.body = {
-    data
+    // success: true,
+    data: {
+      name: '萌萌手抓饼',
+      avatar: '/logo.svg',
+      userid: '00000001',
+      email: 'mmszb@qq.com',
+      signature: `signature`,
+      exp: 50000,
+      notifyCount: 11,
+      unreadCount: 11,
+      access: 'admin',
+    },
   }
 }
 
 exports.captcha = async ctx => {
+
+}
+
+exports.current = async ctx => {
 
 }
 
@@ -30,27 +45,16 @@ exports.login = async ctx => {
 
   if (type === 'account') {
     const { password, name } = ctx.request.body
-    const data = await mysql(`SELECT * FROM ${table} WHERE name=?,password=?`, [name, password])
+    const [data] = await mysql(`SELECT * FROM ${table} WHERE name=? and password=?`, [name, password])
+
     if (data.id) return ctx.body = {
       currentAuthority: data.auth,
       status: 'ok',
       type
     }
   }
-
-  if (password === '123456' && username === 'admin') {
-    return ctx.body = {
-      status: 'ok',
-      type,
-      currentAuthority: 'admin',
-    }
-  }
-  if (password === '123456' && username === 'user') {
-    return ctx.body = {
-      status: 'ok',
-      type,
-      currentAuthority: 'user',
-    };
+  ctx.body = {
+    mesage: 'not found'
   }
 }
 
@@ -152,12 +156,12 @@ exports.notices = async ctx => {
       type: 'event',
     },
   ]
-  data.forEach(x => {
-    const { title, description, avatar, datetime, type } = x
-    mysql(
-      `INSERT INTO notices SET title=?,description=?,avatar=?,datetime=?,type=?`,
-      [title, description, avatar, datetime, type]
-    )
-  })
-  ctx.body = 'success'
+  // data.forEach(x => {
+  //   const { title, description, avatar, datetime, type } = x
+  //   mysql(
+  //     `INSERT INTO notices SET title=?,description=?,avatar=?,datetime=?,type=?`,
+  //     [title, description, avatar, datetime, type]
+  //   )
+  // })
+  ctx.body = { data }
 }

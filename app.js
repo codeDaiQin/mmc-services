@@ -12,7 +12,7 @@ const index = require('./routes/index')
 const user = require('./routes/user')
 const resources = require('./routes/resources')
 const rank = require('./routes/rank')
-const av = require('./routes/av')
+const yellow = require('./routes/yellow')
 
 // error handler
 onerror(app)
@@ -39,8 +39,7 @@ app.use(index.routes(), index.allowedMethods())
 app.use(user.routes(), user.allowedMethods())
 app.use(resources.routes(), resources.allowedMethods())
 app.use(rank.routes(), rank.allowedMethods())
-app.use(av.routes(), av.allowedMethods())
+app.use(yellow.routes(), yellow.allowedMethods())
 
-
-// app.listen(3000)
+app.listen(3000)
 module.exports = app
