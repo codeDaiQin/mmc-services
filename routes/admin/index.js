@@ -1,11 +1,10 @@
 const router = require('koa-router')()
-const { get, detail, add } = require('./controller')
+const { resources, user } = require('./controller')
 
 router.prefix('/api/admin')
 
-router.get('/', get)
+router.get('/resources', resources)
 
-router.get('/:id', detail)
-
+router.get('/user', user)
 
 module.exports = router

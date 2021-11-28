@@ -13,6 +13,7 @@ const user = require('./routes/user')
 const resources = require('./routes/resources')
 const rank = require('./routes/rank')
 const yellow = require('./routes/yellow')
+const admin = require('./routes/admin')
 
 // error handler
 onerror(app)
@@ -40,6 +41,7 @@ app.use(user.routes(), user.allowedMethods())
 app.use(resources.routes(), resources.allowedMethods())
 app.use(rank.routes(), rank.allowedMethods())
 app.use(yellow.routes(), yellow.allowedMethods())
+app.use(admin.routes(), admin.allowedMethods())
 
-app.listen(3000)
+// app.listen(3000)
 module.exports = app
