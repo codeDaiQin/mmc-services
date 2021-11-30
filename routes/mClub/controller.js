@@ -1,4 +1,4 @@
-const mysql = require('../../utils/mysql')
+const mysql = require('../../../utils/mysql')
 
 const table = 'resources'
 
