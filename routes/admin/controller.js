@@ -27,13 +27,11 @@ exports.user = async ctx => {
 }
 
 exports.control = async ctx => {
+  const table = 'resources'
   const { type, id } = ctx.request.query
-  // const data = await mysql(
-  //   `INSERT INTO ${table} SET title =?, url =?, description =?, tag =?, cover =? `,
-  //   [title, url, description, JSON.stringify(tag), JSON.stringify(cover)]
-  // )
+  const data = await mysql(`UPDATE ${table} SET status=? WHERE id=${id}`, [type])
   ctx.body = {
-    // data,
+    data,
     type, id,
     message: 'ok'
   }
