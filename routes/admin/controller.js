@@ -26,16 +26,15 @@ exports.user = async ctx => {
   }
 }
 
-exports.add = async ctx => {
-  const { title, url, description, tag, cover } = ctx.request.body
-  const data = await mysql(
-    `INSERT INTO ${table} SET title =?, url =?, description =?, tag =?, cover =? `,
-    [title, url, description, JSON.stringify(tag), JSON.stringify(cover)]
-  )
+exports.control = async ctx => {
+  const { type, id } = ctx.request.query
+  // const data = await mysql(
+  //   `INSERT INTO ${table} SET title =?, url =?, description =?, tag =?, cover =? `,
+  //   [title, url, description, JSON.stringify(tag), JSON.stringify(cover)]
+  // )
   ctx.body = {
-    data,
+    // data,
+    type, id,
     message: 'ok'
   }
 }
-
-// export.
