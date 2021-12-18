@@ -5,7 +5,6 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
-const auth = require('./utils/auth')
 
 // 路由
 const index = require('./routes/index')
@@ -14,6 +13,7 @@ const resources = require('./routes/resources')
 const rank = require('./routes/rank')
 const yellow = require('./routes/yellow')
 const admin = require('./routes/admin')
+const yun = require('./routes/yun')
 
 // error handler
 onerror(app)
@@ -33,7 +33,6 @@ app.use(async (ctx, next) => {
   const ms = new Date() - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
-app.use(auth())
 
 // routes
 app.use(index.routes(), index.allowedMethods())
@@ -42,6 +41,7 @@ app.use(resources.routes(), resources.allowedMethods())
 app.use(rank.routes(), rank.allowedMethods())
 app.use(yellow.routes(), yellow.allowedMethods())
 app.use(admin.routes(), admin.allowedMethods())
+app.use(yun.routes(), yun.allowedMethods())
 
 // app.listen(3000)
 module.exports = app
