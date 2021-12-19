@@ -5,6 +5,7 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
+const auth = require('./utils/auth')
 
 // 路由
 const index = require('./routes/index')
@@ -14,6 +15,7 @@ const rank = require('./routes/rank')
 const yellow = require('./routes/yellow')
 const admin = require('./routes/admin')
 const yun = require('./routes/yun')
+const comment = require('./routes/comment')
 
 // error handler
 onerror(app)
@@ -23,7 +25,7 @@ app.use(bodyparser())
 app.use(json())
 app.use(logger())
 app.use(require('koa-static')(__dirname + '/public'))
-
+app.use(auth())
 app.use(views(__dirname + '/views', { extension: 'pug' }))
 
 // logger
@@ -42,6 +44,7 @@ app.use(rank.routes(), rank.allowedMethods())
 app.use(yellow.routes(), yellow.allowedMethods())
 app.use(admin.routes(), admin.allowedMethods())
 app.use(yun.routes(), yun.allowedMethods())
+app.use(comment.routes(), comment.allowedMethods())
 
 // app.listen(3000)
 module.exports = app
