@@ -6,6 +6,7 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const auth = require('./utils/auth')
+const cors = require('koa2-cors')
 
 // 路由
 const index = require('./routes/index')
@@ -21,6 +22,7 @@ const comment = require('./routes/comment')
 onerror(app)
 
 // middlewares
+app.use(cors())
 app.use(bodyparser())
 app.use(json())
 app.use(logger())
