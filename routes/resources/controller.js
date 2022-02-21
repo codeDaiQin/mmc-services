@@ -28,7 +28,7 @@ exports.add = async (ctx) => {
 	console.log(cover, cover.path);
 	const data = await mysql(
 		`INSERT INTO ${table} SET name=?,url=?,description=?,tags=?,createTime=?,cover=?`,
-		[name, url, description, JSON.stringify(tags), new Date(), cover.path.replace(reg, "")]
+		[name, url, description, JSON.stringify(tags), new Date(), cover?.path?.replace(reg, "") ?? '']
 	)
 	ctx.body = {
 		data,
