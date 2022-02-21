@@ -26,8 +26,8 @@ exports.add = async (ctx) => {
 	// const fileUrl = await
 
 	const data = await mysql(
-		`INSERT INTO ${table} SET name=?,url=?,description=?,tags=?`,
-		[name, url, description, JSON.stringify(tags)]
+		`INSERT INTO ${table} SET name=?,url=?,description=?,tags=?,createTime=?`,
+		[name, url, description, JSON.stringify(tags), new Date()]
 	)
 	ctx.body = {
 		data,

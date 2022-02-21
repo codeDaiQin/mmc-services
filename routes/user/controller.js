@@ -14,8 +14,9 @@ exports.get = async (ctx) => {
 		notifyCount: 7,
 		unreadCount: 7,
 		access: 'admin',
-		starResourceIds: ['afc123'],
-		group: ['牛爱网'],
+		starResourceIds: JSON.stringify(['afc123']),
+		group: JSON.stringify(['牛爱网']),
+		tags: null
 	}
 }
 
