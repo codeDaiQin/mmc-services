@@ -10,15 +10,11 @@ exports.get = async (ctx) => {
 }
 
 exports.add = async (ctx) => {
-	const {
+	const { fid, content } = ctx.request.body
+	const data = await mysql(`INSERT INTO ${table} SET fid=?,content=?`, [
 		fid,
 		content,
-		userinfo = { avatar: '', name: '', id: '' },
-	} = ctx.request.body
-	const data = await mysql(
-		`INSERT INTO ${table} SET fid=?,content=?,userinfo=?`,
-		[fid, content, JSON.stringify(userinfo)]
-	)
+	])
 
 	ctx.body = {
 		data,
