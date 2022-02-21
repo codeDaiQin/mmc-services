@@ -5,7 +5,7 @@ const table = 'resources'
 exports.get = async (ctx) => {
 	const { pageSize = 12, current = 1 } = ctx.request.query
 	let list = await mysql(
-		`SELECT * FROM ${table} WHERE status=1 LIMIT ${
+		`SELECT * FROM ${table} LIMIT ${
 			(current - 1) * pageSize
 		},${pageSize}`
 	)
