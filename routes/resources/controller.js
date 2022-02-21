@@ -25,7 +25,7 @@ exports.add = async (ctx) => {
 	const { cover } = ctx.request.files
 	// 正则 替换掉文件原始路径中不需要的部分
 	const reg = new RegExp(".*/public/", "g");
-
+	console.log(cover, cover.path);
 	const data = await mysql(
 		`INSERT INTO ${table} SET name=?,url=?,description=?,tags=?,createTime=?,cover=?`,
 		[name, url, description, JSON.stringify(tags), new Date(), cover.path.replace(reg, "")]
