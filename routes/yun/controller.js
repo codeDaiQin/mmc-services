@@ -2,7 +2,7 @@ const mysql = require('../../utils/mysql')
 const table = 'yun'
 
 exports.get = async ctx => {
-  const data = await mysql(`SELECT * FROM ${table} ORDER BY id WHERE status=0`)
+  const data = await mysql(`SELECT * FROM ${table} ORDER BY id`)
   const [{ count }] = await mysql(`SELECT COUNT(*) as count FROM ${table}`)
   ctx.body = { todos: data, total: count }
 }
