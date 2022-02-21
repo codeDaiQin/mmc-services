@@ -9,10 +9,10 @@ exports.get = async (ctx) => {
 			(current - 1) * pageSize
 		},${pageSize}`
 	)
-	const [{ count }] = await mysql(`SELECT COUNT(*) as count FROM ${table}`)
+	const [{ total }] = await mysql(`SELECT COUNT(*) as total FROM ${table}`)
 	ctx.body = {
 		list,
-		total: count,
+		total,
 	}
 }
 

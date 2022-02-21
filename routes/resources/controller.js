@@ -23,13 +23,25 @@ exports.detail = async (ctx) => {
 }
 
 exports.add = async (ctx) => {
-	const { name, url, description, tags, file } = ctx.request.body
+	const { name, url, description, tags, cover  } = ctx.request.body
 
 	// const fileUrl = await
 
 	const data = await mysql(
 		`INSERT INTO ${table} SET name=?,url=?,description=?,tags=?`,
 		[name, url, description, JSON.stringify(tags)]
+	)
+	ctx.body = {
+		data,
+		message: 'ok',
+	}
+}
+
+exports.update = async (ctx) => {
+	const { id, url, name, description, cover } = ctx.request.body
+	const data = await mysql(
+		`UPDATE ${table} SET url=?,name=?,description=?,tags=? WHERE id=${id}`,
+		[url, name, description, JSON.stringify(tags)]
 	)
 	ctx.body = {
 		data,

@@ -48,5 +48,5 @@ app.use(admin.routes(), admin.allowedMethods())
 app.use(yun.routes(), yun.allowedMethods())
 app.use(comment.routes(), comment.allowedMethods())
 
-// app.listen(3000)
-module.exports = app
+app.listen(3000)
+// module.exports = app
