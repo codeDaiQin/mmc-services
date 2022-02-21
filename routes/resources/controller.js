@@ -21,13 +21,14 @@ exports.detail = async (ctx) => {
 }
 
 exports.add = async (ctx) => {
-	const { name, url, description, tags, cover } = ctx.request.body
-
-	// const fileUrl = await
+	const { name, url, description, tags } = ctx.request.body
+	const { cover } = ctx.request.files
+	// 正则 替换掉文件原始路径中不需要的部分
+	const reg = new RegExp(".*/public/", "g");
 
 	const data = await mysql(
-		`INSERT INTO ${table} SET name=?,url=?,description=?,tags=?,createTime=?`,
-		[name, url, description, JSON.stringify(tags), new Date()]
+		`INSERT INTO ${table} SET name=?,url=?,description=?,tags=?,createTime=?,cover=?`,
+		[name, url, description, JSON.stringify(tags), new Date(),cover.path.replace(reg, "")]
 	)
 	ctx.body = {
 		data,
