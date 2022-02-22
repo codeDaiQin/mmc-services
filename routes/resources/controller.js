@@ -22,11 +22,6 @@ exports.detail = async (ctx) => {
 
 exports.add = async (ctx) => {
 	const { name, url, description, tags, cover } = ctx.request.body
-	console.log(ctx.request.body);
-	// const { cover } = ctx.request.files
-	// 正则 替换掉文件原始路径中不需要的部分
-	// const reg = new RegExp(".*/public/", "g");
-	// console.log(cover, cover.path);
 	const data = await mysql(
 		`INSERT INTO ${table} SET name=?,url=?,description=?,tags=?,createTime=?,cover=?`,
 		[name, url, description, JSON.stringify(tags), new Date(), cover]
@@ -40,8 +35,8 @@ exports.add = async (ctx) => {
 exports.update = async (ctx) => {
 	const { id, url, name, description, cover } = ctx.request.body
 	const data = await mysql(
-		`UPDATE ${table} SET url=?,name=?,description=?,tags=?,createTime=? WHERE id=${id}`,
-		[url, name, description, JSON.stringify(tags), new Date()]
+		`UPDATE ${table} SET url=?,name=?,description=?,tags=?,createTime=?,cover=? WHERE id=${id}`,
+		[url, name, description, JSON.stringify(tags), new Date(), cover]
 	)
 	ctx.body = {
 		data,

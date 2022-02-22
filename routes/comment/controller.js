@@ -11,7 +11,7 @@ exports.get = async (ctx) => {
 
 exports.add = async (ctx) => {
 	const { fid, content } = ctx.request.body
-	const data = await mysql(`INSERT INTO ${table} SET fid=?,content=?,tiem=?`, [
+	const data = await mysql(`INSERT INTO ${table} SET fid=?,content=?,time=?`, [
 		fid,
 		content,
 		new Date()

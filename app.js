@@ -24,25 +24,20 @@ onerror(app)
 // middlewares
 app.use(cors())
 app.use(
-  koaBody({
+	koaBody({
 		multipart: true, // 支持文件上传
-		// encoding: 'gzip',
 		formidable: {
 			uploadDir: path.join(__dirname, 'public/'), // 设置文件上传目录
 			keepExtensions: true, // 保持文件的后缀
-			// maxFieldsSize: 10 * 1024 * 1024, // 文件上传大小
-			// onFileBegin: (name, file) => {
-				// 文件上传前的设置
-				// console.log(`name: ${name}`);
-				// console.log(file);
-			// },
 		},
 	})
 )
 
 app.use(json())
 app.use(logger())
-app.use(require('koa-mount')('/api', require('koa-static')(__dirname + '/public')))
+app.use(
+	require('koa-mount')('/api', require('koa-static')(__dirname + '/public'))
+)
 app.use(auth())
 app.use(views(__dirname + '/views', { extension: 'pug' }))
 
