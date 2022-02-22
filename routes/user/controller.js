@@ -20,9 +20,9 @@ exports.login = async (ctx) => {
 	if (type === 'mobile') {
 		if (captcha) {
 			const [data] = await mysql(`SELECT * FROM ${table} WHERE email=?`, email)
-			const { id, name, avatar } = data
+			const { id } = data
 			if (id) {
-				const token = jwt.sign({ uid: id, author: name, avatar }, KEY)
+				const token = jwt.sign({ uid: id }, KEY)
 				await mysql(`UPDATE ${table} SET token=? WHERE id=?`, [token, id])
 				ctx.body = { ...data, token }
 				return
@@ -35,9 +35,9 @@ exports.login = async (ctx) => {
 			`SELECT * FROM ${table} WHERE name=? and password=?`,
 			[name, password]
 		)
-		const { id, avatar } = data
+		const { id } = data
 		if (id) {
-			const token = jwt.sign({ uid: id, author: data.name, avatar }, KEY)
+			const token = jwt.sign({ uid: id }, KEY)
 			await mysql(`UPDATE ${table} SET token=? WHERE id=?`, [token, id])
 			ctx.body = { ...data, token }
 			return

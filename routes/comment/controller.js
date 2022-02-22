@@ -16,7 +16,6 @@ exports.add = async (ctx) => {
 		content,
 		new Date()
 	])
-
 	ctx.body = {
 		data,
 		message: 'ok',
@@ -25,7 +24,10 @@ exports.add = async (ctx) => {
 
 exports.like = async ctx => {
 	const { cid } = ctx.request.query
-
+	const { uid } = ctx.auth
+	const userInfo = await mysql(`SELECT * FROM user WHERE id=?`, [uid])
+	const starResourceIds = JSON.parse(userInfo.starResourceIds ?? '[]').push(cid)
+	await mysql(`UPDATE USER SET starResourceIds=? WHERE id=?`,[JSON.stringify(starResourceIds), uid])	
 	const data = await mysql(`UPDATE ${table} SET likeCount=? WHERE id=?`, [1, cid])
 	ctx.body = {
 		

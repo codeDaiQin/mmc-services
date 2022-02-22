@@ -17,25 +17,16 @@ exports.get = async (ctx) => {
 exports.detail = async (ctx) => {
 	const { id } = ctx.params
 	const [data] = await mysql(`SELECT * FROM ${table} WHERE id=?`, id)
-	ctx.body = data
+	const [userInfo] = await mysql(`SELECT * FROM user WHERE id=?`, uid)
+	ctx.body = { ...data, ...userInfo }
 }
 
 exports.add = async (ctx) => {
 	const { name, url, description, tags, cover } = ctx.request.body
-	const { uid, author, avatar } = ctx.auth
+	const { uid } = ctx.auth
 	const data = await mysql(
-		`INSERT INTO ${table} SET name=?,url=?,description=?,tags=?,createTime=?,cover=?,uid=?,author=?,avatar=?`,
-		[
-			name,
-			url,
-			description,
-			JSON.stringify(tags),
-			new Date(),
-			cover,
-			uid,
-			author,
-			avatar,
-		]
+		`INSERT INTO ${table} SET name=?,url=?,description=?,tags=?,createTime=?,cover=?,uid=?`,
+		[name, url, description, JSON.stringify(tags), new Date(), cover, uid]
 	)
 	ctx.body = {
 		data,
