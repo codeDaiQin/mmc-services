@@ -3,21 +3,13 @@ const jwt = require('jsonwebtoken')
 const table = 'user'
 
 exports.get = async (ctx) => {
-	// const data = await mysql(`SELECT * FROM ${table} WHERE id=?`, '1')
-	ctx.body = {
-		id: 'mmc',
-		name: '萌萌手抓饼',
-		avatar: '/logo.svg',
-		email: 'mmszb@qq.com',
-		signature: `signature`,
-		exp: 50000,
-		notifyCount: 7,
-		unreadCount: 7,
-		access: 'admin',
-		starResourceIds: JSON.stringify(['afc123']),
-		group: JSON.stringify(['牛爱网']),
-		tags: null,
+	const { uid } = ctx.author
+	const [data] = await mysql(`SELECT * FROM ${table} WHERE id=?`, uid)
+	if (data.id) {
+		ctx.body = data
+		return
 	}
+	ctx.body = {}
 }
 
 exports.captcha = async (ctx) => {}
