@@ -1,6 +1,6 @@
 const mysql = require('../../../utils/mysql')
 
-const table = 'resources'
+const table = 'mClub'
 
 exports.get = async (ctx) => {
 	const { pageSize = 12, current = 1 } = ctx.request.query
