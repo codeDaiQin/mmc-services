@@ -24,18 +24,18 @@ onerror(app)
 // middlewares
 app.use(cors())
 app.use(
-	koaBody({
+  koaBody({
 		multipart: true, // 支持文件上传
-		encoding: 'gzip',
+		// encoding: 'gzip',
 		formidable: {
 			uploadDir: path.join(__dirname, 'public/'), // 设置文件上传目录
 			keepExtensions: true, // 保持文件的后缀
-			maxFieldsSize: 10 * 1024 * 1024, // 文件上传大小
-			onFileBegin: (name, file) => {
+			// maxFieldsSize: 10 * 1024 * 1024, // 文件上传大小
+			// onFileBegin: (name, file) => {
 				// 文件上传前的设置
 				// console.log(`name: ${name}`);
 				// console.log(file);
-			},
+			// },
 		},
 	})
 )
