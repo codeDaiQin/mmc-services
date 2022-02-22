@@ -22,6 +22,7 @@ exports.detail = async (ctx) => {
 
 exports.add = async (ctx) => {
 	const { name, url, description, tags, cover } = ctx.request.body
+	console.log(ctx.request.body);
 	// const { cover } = ctx.request.files
 	// 正则 替换掉文件原始路径中不需要的部分
 	// const reg = new RegExp(".*/public/", "g");
