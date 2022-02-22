@@ -45,7 +45,6 @@ app.use(views(__dirname + '/views', { extension: 'pug' }))
 // logger
 app.use(async (ctx, next) => {
 	const { user_token = '' } = ctx.headers
-	console.log(ctx.headers, ctx.header)
 	let userInfo = {}
 	if (user_token) {
 		try {
