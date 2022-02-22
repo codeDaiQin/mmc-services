@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const table = 'user'
 
 exports.get = async (ctx) => {
-	const { uid } = ctx.author
+	const { uid } = ctx.auth
 	const [data] = await mysql(`SELECT * FROM ${table} WHERE id=?`, uid)
 	if (data.id) {
 		ctx.body = data
