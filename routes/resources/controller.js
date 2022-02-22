@@ -17,7 +17,7 @@ exports.get = async (ctx) => {
 exports.detail = async (ctx) => {
 	const { id } = ctx.params
 	const [data] = await mysql(`SELECT * FROM ${table} WHERE id=?`, id)
-	const [userInfo] = await mysql(`SELECT * FROM user WHERE id=?`, uid)
+	const [userInfo] = await mysql(`SELECT * FROM user WHERE id=?`, data.uid)
 	ctx.body = { ...data, ...userInfo }
 }
 
