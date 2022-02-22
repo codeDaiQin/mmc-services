@@ -45,12 +45,13 @@ app.use(views(__dirname + '/views', { extension: 'pug' }))
 // logger
 app.use(async (ctx, next) => {
 	const { user_token } = ctx.headers
+  
 	let userInfo = {}
 	if (user_token) {
 		try {
 			userInfo = jwt.verify(user_token, 'MMSZB')
 		} catch (error) {}
-    console.log(userInfo);
+    console.log('user_token', user_token, userInfo);
 		ctx.auth = userInfo
 	}
 	await next()

@@ -23,7 +23,7 @@ exports.detail = async (ctx) => {
 exports.add = async (ctx) => {
 	const { name, url, description, tags, cover } = ctx.request.body
 	const { uid, author, avatar } = ctx.auth
-	console.log(ctx.auth);
+	console.log(ctx.auth, 'auth');
 	const data = await mysql(
 		`INSERT INTO ${table} SET name=?,url=?,description=?,tags=?,createTime=?,cover=?,uid=?,author=?,avatar=?`,
 		[
