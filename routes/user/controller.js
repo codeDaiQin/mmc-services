@@ -1,9 +1,9 @@
 const mysql = require('../../utils/mysql')
+const jwt = require('jsonwebtoken')
 const table = 'user'
 
 exports.get = async (ctx) => {
 	// const data = await mysql(`SELECT * FROM ${table} WHERE id=?`, '1')
-
 	ctx.body = {
 		id: 'mmc',
 		name: '萌萌手抓饼',
@@ -16,44 +16,43 @@ exports.get = async (ctx) => {
 		access: 'admin',
 		starResourceIds: JSON.stringify(['afc123']),
 		group: JSON.stringify(['牛爱网']),
-		tags: null
+		tags: null,
 	}
 }
 
 exports.captcha = async (ctx) => {}
 
-exports.current = async (ctx) => {}
-
 exports.login = async (ctx) => {
 	const { type } = ctx.request.body
-
+	const KEY = 'MMSZB'
+	const { email, captcha, password, name } = ctx.request.body
 	if (type === 'mobile') {
-		const { email, captcha } = ctx.request.body
 		if (captcha) {
-			const data = await mysql(`SELECT * FROM ${table} WHERE email=?`, email)
-			if (data.id)
-				return (ctx.body = {
-					currentAuthority: data.auth,
-					status: 'ok',
-					type,
-				})
+			const [data] = await mysql(`SELECT * FROM ${table} WHERE email=?`, email)
+			const { id, name, avatar } = data
+			if (id) {
+				const token = jwt.sign({ uid: id, author: name, avatar }, KEY)
+				await mysql(`UPDATE ${table} SET token=? WHERE id=?`, [token, id])
+				ctx.body = { ...data, token }
+				return
+			}
 		}
 	}
 
 	if (type === 'account') {
-		const { password, name } = ctx.request.body
 		const [data] = await mysql(
 			`SELECT * FROM ${table} WHERE name=? and password=?`,
 			[name, password]
 		)
-
-		if (data.id)
-			return (ctx.body = {
-				currentAuthority: data.auth,
-				status: 'ok',
-				type,
-			})
+		const { id, avatar } = data
+		if (id) {
+			const token = jwt.sign({ uid: id, author: data.name, avatar }, KEY)
+			await mysql(`UPDATE ${table} SET token=? WHERE id=?`, [token, id])
+			ctx.body = { ...data, token }
+			return
+		}
 	}
+
 	ctx.body = {
 		mesage: 'not found',
 	}

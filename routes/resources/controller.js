@@ -22,9 +22,20 @@ exports.detail = async (ctx) => {
 
 exports.add = async (ctx) => {
 	const { name, url, description, tags, cover } = ctx.request.body
+	const { uid, author, avatar } = ctx.auth
 	const data = await mysql(
-		`INSERT INTO ${table} SET name=?,url=?,description=?,tags=?,createTime=?,cover=?`,
-		[name, url, description, JSON.stringify(tags), new Date(), cover]
+		`INSERT INTO ${table} SET name=?,url=?,description=?,tags=?,createTime=?,cover=?,uid=?,author=?,avatar=?`,
+		[
+			name,
+			url,
+			description,
+			JSON.stringify(tags),
+			new Date(),
+			cover,
+			uid,
+			author,
+			avatar,
+		]
 	)
 	ctx.body = {
 		data,

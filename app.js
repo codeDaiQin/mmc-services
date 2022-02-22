@@ -8,6 +8,7 @@ const logger = require('koa-logger')
 const auth = require('./utils/auth')
 const cors = require('koa2-cors')
 const path = require('path')
+const jwt = require('jsonwebtoken')
 // 路由
 const index = require('./routes/index')
 const user = require('./routes/user')
@@ -38,15 +39,25 @@ app.use(logger())
 app.use(
 	require('koa-mount')('/api', require('koa-static')(__dirname + '/public'))
 )
-app.use(auth())
+// app.use(auth())
 app.use(views(__dirname + '/views', { extension: 'pug' }))
 
 // logger
 app.use(async (ctx, next) => {
-	const start = new Date()
+	const { user_token } = ctx.headers
+	let uid = {}
+	if (user_token) {
+		try {
+			uid = jwt.verify(user_token, 'MMSZB')
+		} catch (error) {}
+
+		ctx.auth = uid
+	}
 	await next()
-	const ms = new Date() - start
-	console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
+	// const start = new Date()
+	// await next()
+	// const ms = new Date() - start
+	// console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
 // routes
