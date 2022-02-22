@@ -23,9 +23,8 @@ exports.get = async (ctx) => {
 exports.captcha = async (ctx) => {}
 
 exports.login = async (ctx) => {
-	const { type } = ctx.request.body
 	const KEY = 'MMSZB'
-	const { email, captcha, password, name } = ctx.request.body
+	const { type, email, captcha, password, name } = ctx.request.body
 	if (type === 'mobile') {
 		if (captcha) {
 			const [data] = await mysql(`SELECT * FROM ${table} WHERE email=?`, email)

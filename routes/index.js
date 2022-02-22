@@ -24,28 +24,6 @@ router.get("/json", async (ctx, next) => {
   };
 });
 
-router.get('/api/commentList', async ctx => {
-  const { resourceId, pageSize, pageNum } = ctx.request.query
-  const count = Number(pageNum) * pageSize || 5;
-  let list = []
-  for (let i = 0; i < count; i++) {
-    list.push({
-      id: 'mmc' + i,
-      name: 'string',
-      likeNum: i,
-      userId: 'string',
-      content: 'string',
-      time: '16点30分',
-    })
-  }
-  ctx.body = {
-    data: {
-      list,
-      total: 50,
-    },
-  }
-})
-
 router.get('/api/notices', async ctx => {
   ctx.body = {
     data: [
