@@ -51,7 +51,6 @@ app.use(async (ctx, next) => {
 		try {
 			userInfo = jwt.verify(user_token, 'MMSZB')
 		} catch (error) {}
-    console.log('user_token', user_token, userInfo);
 		ctx.auth = userInfo
 	}
 	await next()
