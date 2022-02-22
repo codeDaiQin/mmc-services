@@ -39,9 +39,10 @@ app.use(
 		},
 	})
 )
+
 app.use(json())
 app.use(logger())
-app.use(require('koa-static')(__dirname + '/public'))
+app.use(require('koa-mount')('/api', require('koa-static')(__dirname + '/public')))
 app.use(auth())
 app.use(views(__dirname + '/views', { extension: 'pug' }))
 
