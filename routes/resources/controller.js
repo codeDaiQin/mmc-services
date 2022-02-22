@@ -22,7 +22,7 @@ exports.detail = async (ctx) => {
 
 exports.add = async (ctx) => {
 	const { name, url, description, tags, cover } = ctx.request.body
-	const { uid = '', author = '', avatar = '' } = ctx.auth
+	// const { uid = '', author = '', avatar = '' } = ctx.auth
 	console.log(ctx.auth, 'auth');
 	ctx.body = ctx.auth
 	return

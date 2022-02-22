@@ -44,7 +44,7 @@ app.use(views(__dirname + '/views', { extension: 'pug' }))
 
 // logger
 app.use(async (ctx, next) => {
-	const { user_token } = ctx.headers
+	const { user_token = '' } = ctx.headers
   
 	let userInfo = {}
 	if (user_token) {
