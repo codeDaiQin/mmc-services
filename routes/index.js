@@ -1,12 +1,8 @@
 const router = require("koa-router")();
 
-router.get("/", async (ctx, next) => {
-  await ctx.render("index", {
-    title: "Tencent CloudBase + Koa",
-  });
-});
+router.prefix('/api')
 
-router.post('/api/publish', async (ctx) => {
+router.post('/publish', async (ctx) => {
   const { file } = ctx.request.files
   	// 正则 替换掉文件原始路径中不需要的部分
 	const reg = new RegExp(".*/public/", "g");
@@ -14,17 +10,7 @@ router.post('/api/publish', async (ctx) => {
   ctx.body = file?.path?.replace(reg, "") ?? ''
 })
 
-router.get("/string", async (ctx, next) => {
-  ctx.body = "koa2 string";
-});
-
-router.get("/json", async (ctx, next) => {
-  ctx.body = {
-    title: "koa2 json",
-  };
-});
-
-router.get('/api/notices', async ctx => {
+router.get('/notices', async ctx => {
   ctx.body = {
     data: [
       {
@@ -124,6 +110,13 @@ router.get('/api/notices', async ctx => {
       },
     ],
   }
+})
+
+router.get('/taglist', async ctx => {
+  ctx.body = [
+    '前端',
+    '后端'
+  ]
 })
 
 module.exports = router;
