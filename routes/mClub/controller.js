@@ -4,12 +4,11 @@ const table = 'mClub'
 
 exports.get = async (ctx) => {
 	const { pageSize = 12, current = 1 } = ctx.request.query
-	let list = await mysql(
-		`SELECT * FROM ${table} WHERE status=1 LIMIT ${
-			(current - 1) * pageSize
-		},${pageSize}`
+	const list = await mysql(
+		`SELECT * FROM ${table} LIMIT ${(current - 1) * pageSize},${pageSize}`
 	)
 	const [{ total }] = await mysql(`SELECT COUNT(*) as total FROM ${table}`)
+	
 	ctx.body = {
 		list,
 		total,
