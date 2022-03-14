@@ -16,39 +16,39 @@ const rank = require('./routes/rank')
 const admin = require('./routes/admin')
 const comment = require('./routes/comment')
 const mClub = require('./routes/mClub')
-
+const notices = require('./routes/notices')
 // error handler
 onerror(app)
 
 // middlewares
 app.use(cors())
 app.use(
-	koaBody({
-		multipart: true, // 支持文件上传
-		formidable: {
-			uploadDir: path.join(__dirname, 'public/'), // 设置文件上传目录
-			keepExtensions: true, // 保持文件的后缀
-		},
-	})
+  koaBody({
+    multipart: true, // 支持文件上传
+    formidable: {
+      uploadDir: path.join(__dirname, 'public/'), // 设置文件上传目录
+      keepExtensions: true, // 保持文件的后缀
+    },
+  })
 )
 
 app.use(json())
 app.use(logger())
 app.use(
-	require('koa-mount')('/api', require('koa-static')(__dirname + '/public'))
+  require('koa-mount')('/api', require('koa-static')(__dirname + '/public'))
 )
 
-// logger
+// auth
 app.use(async (ctx, next) => {
-	const { user_token = '' } = ctx.headers
-	let userInfo = {}
-	if (user_token) {
-		try {
-			userInfo = jwt.verify(user_token, 'MMSZB') ?? {}
-		} catch (error) {}
-		ctx.auth = userInfo
-	}
-	await next()
+  const { token = '' } = ctx.headers
+  let userInfo
+  if (token) {
+    try {
+      userInfo = jwt.verify(token, 'MMSZB')
+    } catch (error) {}
+    ctx.auth = userInfo
+  }
+  await next()
 })
 
 // routes
@@ -59,6 +59,6 @@ app.use(rank.routes(), rank.allowedMethods())
 app.use(admin.routes(), admin.allowedMethods())
 app.use(comment.routes(), comment.allowedMethods())
 app.use(mClub.routes(), mClub.allowedMethods())
+app.use(notices.routes(), notices.allowedMethods())
 
 app.listen(3000)
-// module.exports = app

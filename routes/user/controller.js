@@ -3,9 +3,9 @@ const jwt = require('jsonwebtoken')
 const table = 'user'
 
 exports.get = async (ctx) => {
-  const { uid } = ctx.auth
-  if (uid) {
-    const [data] = await mysql(`SELECT * FROM ${table} WHERE id=?`, uid)
+  const id = ctx.auth
+  if (id) {
+    const [data] = await mysql(`SELECT * FROM ${table} WHERE id=?`, id)
     if (data.id) {
       ctx.body = data
       return
@@ -24,7 +24,7 @@ exports.login = async (ctx) => {
       const [data] = await mysql(`SELECT * FROM ${table} WHERE email=?`, email)
       const { id } = data
       if (id) {
-        const token = jwt.sign({ uid: id }, KEY)
+        const token = jwt.sign(id, KEY)
         await mysql(`UPDATE ${table} SET token=? WHERE id=?`, [token, id])
         ctx.body = { ...data, token }
         return
@@ -39,7 +39,7 @@ exports.login = async (ctx) => {
     )
     const { id } = data
     if (id) {
-      const token = jwt.sign({ uid: id }, KEY)
+      const token = jwt.sign(id, KEY)
       await mysql(`UPDATE ${table} SET token=? WHERE id=?`, [token, id])
       ctx.body = { ...data, token }
       return
