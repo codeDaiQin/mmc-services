@@ -4,8 +4,10 @@ const table = 'user'
 
 exports.get = async (ctx) => {
   const uid = ctx.auth
+  console.log(uid);
   if (uid) {
     const [data] = await mysql(`SELECT * FROM ${table} WHERE id=?`, uid)
+    console.log(data);
     if (data.id) {
       ctx.body = data
       return
