@@ -1,9 +1,6 @@
 const Koa = require('koa')
 const app = new Koa()
-const json = require('koa-json')
-const onerror = require('koa-onerror')
 const koaBody = require('koa-body')
-const logger = require('koa-logger')
 const cors = require('koa2-cors')
 const path = require('path')
 const jwt = require('jsonwebtoken')
@@ -17,8 +14,6 @@ const admin = require('./routes/admin')
 const comment = require('./routes/comment')
 const mClub = require('./routes/mClub')
 const notices = require('./routes/notices')
-// error handler
-onerror(app)
 
 // middlewares
 app.use(cors())
@@ -31,9 +26,6 @@ app.use(
     },
   })
 )
-
-app.use(json())
-app.use(logger())
 app.use(
   require('koa-mount')('/api', require('koa-static')(__dirname + '/public'))
 )
