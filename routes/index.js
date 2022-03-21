@@ -14,4 +14,8 @@ router.get('/taglist', async (ctx) => {
   ctx.body = ['前端', '后端']
 })
 
+router.get('/test', async ctx => {
+  ctx.body = 'success'
+})
+
 module.exports = router

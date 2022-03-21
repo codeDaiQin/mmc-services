@@ -74,3 +74,7 @@ exports.recruit = async ctx => {
     total: data.length
   }
 }
+
+exports.admin = async ctx => {
+  
+}
