@@ -1,5 +1,5 @@
 const router = require('koa-router')()
-const { get, detail, add, update, star } = require('./controller')
+const { get, detail, add, update, star, getStar } = require('./controller')
 
 router.prefix('/api/resources')
 
@@ -12,5 +12,7 @@ router.post('/add', add)
 router.put('/update', update)
 
 router.put('/star', star)
+
+router.get('/getStar', getStar)
 
 module.exports = router

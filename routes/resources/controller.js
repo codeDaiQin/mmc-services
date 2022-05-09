@@ -3,7 +3,8 @@ const mysql = require('../../utils/mysql')
 const table = 'resources'
 
 exports.get = async (ctx) => {
-  const { pageSize = 12, pageNum = 1, sortType = 0 } = ctx.request.query
+  const { pageSize = 12, pageNum = 1, tags, orderKey } = ctx.request.query
+
   let list = await mysql(
     `SELECT * FROM ${table} WHERE status=1 LIMIT ${
       (pageNum - 1) * pageSize
@@ -109,4 +110,17 @@ exports.star = async (ctx) => {
     id,
   ])
   ctx.body = res
+}
+
+exports.getStar = async (ctx) => {
+  const { ids } = ctx.request.query
+
+  let list = await mysql(
+    `SELECT * FROM ${table} WHERE status=1, id in ${ids} `
+  )
+  const [{ total }] = await mysql(`SELECT COUNT(*) as total FROM ${table}`)
+  ctx.body = {
+    list,
+    total,
+  }
 }

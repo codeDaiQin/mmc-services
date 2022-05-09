@@ -4,10 +4,8 @@ const table = 'user'
 
 exports.get = async (ctx) => {
   const uid = ctx.auth
-  console.log(uid);
   if (uid) {
     const [data] = await mysql(`SELECT * FROM ${table} WHERE id=?`, uid)
-    console.log(data);
     if (data.id) {
       ctx.body = data
       return
@@ -16,7 +14,10 @@ exports.get = async (ctx) => {
   ctx.body = {}
 }
 
-exports.captcha = async (ctx) => {}
+exports.captcha = async (ctx) => {
+  const { email } = ctx.request.query
+  ctx.body = { email }
+}
 
 exports.login = async (ctx) => {
   const KEY = 'MMSZB'

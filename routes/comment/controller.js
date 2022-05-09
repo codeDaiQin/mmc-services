@@ -3,11 +3,11 @@ const mysql = require('../../utils/mysql')
 const table = 'comment'
 
 exports.get = async (ctx) => {
-  const { fid, pageSize = 8, pageNum = 1, sortType } = ctx.request.query
+  const { fid, pageSize = 8, pageNum = 1 } = ctx.request.query
   const list = await mysql(
-    `SELECT a.*, b.name, b.avatar FROM ${table} a inner join user b on a.uid = b.id WHERE fid=${fid} ${
-      sortType && 'ORDER BY id DESC'
-    } LIMIT ${(pageNum - 1) * pageSize}, ${pageSize}`
+    `SELECT a.*, b.name, b.avatar FROM ${table} a inner join user b on a.uid = b.id WHERE fid=${fid} LIMIT ${
+      (pageNum - 1) * pageSize
+    }, ${pageSize}`
   )
   const [{ total }] = await mysql(
     `SELECT COUNT(*) as total FROM ${table} WHERE fid=${fid}`
