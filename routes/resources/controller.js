@@ -3,13 +3,14 @@ const mysql = require('../../utils/mysql')
 const table = 'resources'
 
 exports.get = async (ctx) => {
-  const { pageSize = 12, pageNum = 1, tags, orderKey } = ctx.request.query
+  const { pageSize = 12, pageNum = 1, keyword } = ctx.request.query
 
-  let list = await mysql(
-    `SELECT * FROM ${table} WHERE status=1 LIMIT ${
-      (pageNum - 1) * pageSize
-    },${pageSize}`
+  const list = await mysql(
+    `SELECT * FROM ${table} WHERE status=1
+    ${keyword ? ` AND name LIKE '%${keyword}%' ` : ' '}
+    LIMIT ${(pageNum - 1) * pageSize},${pageSize}`
   )
+
   const [{ total }] = await mysql(`SELECT COUNT(*) as total FROM ${table}`)
   ctx.body = {
     list,
@@ -58,7 +59,7 @@ exports.add = async (ctx) => {
 }
 
 exports.update = async (ctx) => {
-  const { id, url, name, description, cover } = ctx.request.body
+  const { id, url, name, description, cover, tags } = ctx.request.body
   const uid = ctx.auth
   const data = await mysql(
     `UPDATE ${table} SET url=?,name=?,description=?,tags=?,createTime=?,cover=?,lastEditTime=?,lastEditUser=? WHERE id=${id}`,
@@ -115,9 +116,7 @@ exports.star = async (ctx) => {
 exports.getStar = async (ctx) => {
   const { ids } = ctx.request.query
 
-  let list = await mysql(
-    `SELECT * FROM ${table} WHERE status=1, id in ${ids} `
-  )
+  let list = await mysql(`SELECT * FROM ${table} WHERE status=1, id in ${ids} `)
   const [{ total }] = await mysql(`SELECT COUNT(*) as total FROM ${table}`)
   ctx.body = {
     list,
