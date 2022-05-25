@@ -1,12 +1,8 @@
 const router = require('koa-router')()
-const { level, recruit, admin } = require('./controller')
+const { level, recruit, admin, getFindList } = require('./controller')
 
 router.prefix('/api/world')
 
-router.get('/level', level)
-
-router.get('/recruit', recruit)
-
-router.get('/admin', admin)
-
+router.get('/rank', level)
+router.get('/findList', getFindList)
 module.exports = router

@@ -1,80 +1,31 @@
-const data = [
-  {
-    name: 'mmszb',
-    exp: 800,
-    avatar: '',
-    id: '123',
-  },
-  {
-    name: 'mmszb',
-    exp: 800,
-    avatar: '',
-    id: '123',
-  },
-  {
-    name: 'mmszb',
-    exp: 800,
-    avatar: '',
-    id: '123',
-  },
-  {
-    name: 'mmszb',
-    exp: 800,
-    avatar: '',
-    id: '123',
-  },
-  {
-    name: 'mmszb',
-    exp: 800,
-    avatar: '',
-    id: '123',
-  },
-  {
-    name: 'mmszb',
-    exp: 800,
-    avatar: '',
-    id: '123',
-  },
-  {
-    name: 'mmszb',
-    exp: 800,
-    avatar: '',
-    id: '123',
-  },
-  {
-    name: 'mmszb',
-    exp: 800,
-    avatar: '',
-    id: '123',
-  },
-  {
-    name: 'mmszb',
-    exp: 800,
-    avatar: '',
-    id: '123',
-  },
-  {
-    name: 'mmszb',
-    exp: 800,
-    avatar: '',
-    id: '123',
-  },
-];
+const mysql = require('../../utils/mysql')
 
-exports.level = async ctx => {
+const table = 'user'
+
+exports.level = async (ctx) => {
+  const list = await mysql(`SELECT * FROM ${table} ORDER BY exp DESC`)
+  const [{ total }] = await mysql(
+    `SELECT COUNT(*) as total FROM ${table} LIMIT 20`
+  )
+
   ctx.body = {
-    data,
-    total: data.length
+    list,
+    total,
   }
 }
 
-exports.recruit = async ctx => {
+exports.getFindList = async (ctx) => {
+  const list = [
+    {
+      user: 'admin',
+      content: '水杯',
+    },
+    {
+      user: 'admin',
+      content: '充电器',
+    },
+  ]
   ctx.body = {
-    data,
-    total: data.length
+    list,
   }
-}
-
-exports.admin = async ctx => {
-  
 }

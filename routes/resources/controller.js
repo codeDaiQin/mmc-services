@@ -3,15 +3,27 @@ const mysql = require('../../utils/mysql')
 const table = 'resources'
 
 exports.get = async (ctx) => {
-  const { pageSize = 12, pageNum = 1, keyword } = ctx.request.query
+  const {
+    pageSize = 12,
+    pageNum = 1,
+    keyword,
+    orderKey,
+    tags,
+  } = ctx.request.query
 
   const list = await mysql(
     `SELECT * FROM ${table} WHERE status=1
-    ${keyword ? ` AND name LIKE '%${keyword}%' ` : ' '}
+    ${keyword ? ` AND name LIKE '%${keyword}%'` : ' '}
+    ${tags ? ` AND tags LIKE '%${tags}%' ` : ' '}
+    ORDER BY ${orderKey || 'id'} DESC
     LIMIT ${(pageNum - 1) * pageSize},${pageSize}`
   )
 
-  const [{ total }] = await mysql(`SELECT COUNT(*) as total FROM ${table}`)
+  const [{ total }] = await mysql(
+    `SELECT COUNT(*) as total FROM ${table}  WHERE status=1
+    ${keyword ? ` AND name LIKE '%${keyword}%'` : ' '}
+    ${tags ? ` AND tags LIKE '%${tags}%' ` : ' '}`
+  )
   ctx.body = {
     list,
     total,
@@ -45,13 +57,8 @@ exports.add = async (ctx) => {
       new Date(),
     ]
   )
-
-  // 派发通知
-  // await mysql(
-  //   `INSERT INTO notices SET title=?,datetime=?,description=?,type=?,uid=?`,
-  //   [title, new Date(), `您投稿的${name}已进入审核列表 等待审核通过后可展示`, 'notification', uid]
-  // )
-
+  const [user] = await mysql(`SELECT * FROM user WHERE id=?`, uid)
+  await mysql(`UPDATE user SET exp=? WHERE id=${uid}`, [user.exp + 5])
   ctx.body = {
     data,
     message: 'ok',
@@ -88,8 +95,8 @@ exports.star = async (ctx) => {
     `SELECT starCount FROM ${table} WHERE id=${id}`
   )
   // 查询用户收藏列表
-  const [{ starResourceIds }] = await mysql(
-    `SELECT starResourceIds FROM user WHERE id=${uid}`
+  const [{ starResourceIds, exp }] = await mysql(
+    `SELECT starResourceIds, exp FROM user WHERE id=${uid}`
   )
   let res = 0
   const stars = JSON.parse(starResourceIds || '[]')
@@ -101,8 +108,9 @@ exports.star = async (ctx) => {
     res = 1
   }
 
-  await mysql(`UPDATE user SET starResourceIds=? WHERE id=?`, [
+  await mysql(`UPDATE user SET starResourceIds=?,exp=? WHERE id=?`, [
     JSON.stringify(stars),
+    exp + res,
     uid,
   ])
 

@@ -9,9 +9,12 @@ exports.get = async (ctx) => {
   )
   const [{ total }] = await mysql(`SELECT COUNT(*) as total FROM ${table}`)
 
+  // const av = await mysql(`SELECT * FROM av`)
+
   ctx.body = {
     list,
     total,
+    // av
   }
 }
 
@@ -22,9 +25,10 @@ exports.detail = async (ctx) => {
 }
 
 exports.add = async (ctx) => {
-  const { content} = ctx.request.body
+  const { content } = ctx.request.body
   const uid = ctx.auth
-  await mysql(`INSERT INTO ${table} SET uid=?,content=?`, [uid, content])
+  const [user] = await mysql(`SELECT * FROM user WHERE id=?`, uid)
+  await mysql(`INSERT INTO ${table} SET uid=?,content=?,author=?,avatar=?`, [uid, content, user.name, user.avatar])
   ctx.body = {
     message: 'ok',
   }
